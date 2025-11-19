@@ -631,44 +631,154 @@ import 'package:flutter/material.dart';
 class BoutiquePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final wallPaint =
+    // Вид сверху как на карте
+    final buildingPaint =
         Paint()
-          ..color = Colors.black
-          ..strokeWidth = 3
+          ..color = const Color(0xFFE8E6E3)
+          ..style = PaintingStyle.fill;
+
+    final outlinePaint =
+        Paint()
+          ..color = const Color(0xFFA0A0A0)
+          ..strokeWidth = 2
           ..style = PaintingStyle.stroke;
 
-    final fillPaint =
+    final roofPaint =
         Paint()
-          ..color = Colors.white
+          ..color = const Color(0xFFD4D2CF)
           ..style = PaintingStyle.fill;
 
-    // Основной прямоугольник — тело бутика
-    Rect boutique = Rect.fromLTWH(20, 20, size.width - 40, size.height - 40);
-    canvas.drawRect(boutique, fillPaint);
-    canvas.drawRect(boutique, wallPaint);
-
-    // Дверь
-    final doorPaint =
+    final parkingPaint =
         Paint()
-          ..color = Colors.brown
+          ..color = const Color(0xFFF0F0F0)
           ..style = PaintingStyle.fill;
 
-    Rect door = Rect.fromLTWH(size.width / 2 - 20, size.height - 60, 40, 40);
-    canvas.drawRect(door, doorPaint);
-
-    // Окно
-    final windowPaint =
+    final roadPaint =
         Paint()
-          ..color = Colors.lightBlueAccent
+          ..color = const Color(0xFF808080)
           ..style = PaintingStyle.fill;
 
-    Rect window = Rect.fromLTWH(
-      size.width / 4,
-      size.height / 2 - 25,
-      size.width / 2,
-      50,
+    final detailPaint =
+        Paint()
+          ..color = const Color(0xFF666666)
+          ..strokeWidth = 1
+          ..style = PaintingStyle.stroke;
+
+    // Основное здание (вид сверху - прямоугольник)
+    Rect building = Rect.fromLTWH(50, 50, size.width - 100, size.height - 150);
+    canvas.drawRect(building, buildingPaint);
+    canvas.drawRect(building, outlinePaint);
+
+    // Крыша (вид сверху - такой же прямоугольник с отступом)
+    Rect roof = Rect.fromLTWH(45, 45, size.width - 90, size.height - 140);
+    canvas.drawRect(roof, roofPaint);
+    canvas.drawRect(roof, outlinePaint);
+
+    // Входная группа (вид сверху)
+    final entrancePaint =
+        Paint()
+          ..color = const Color(0xFF8B7355)
+          ..style = PaintingStyle.fill;
+
+    // Главный вход
+    Rect entrance = Rect.fromLTWH(
+      size.width / 2 - 30,
+      size.height - 100,
+      60,
+      20,
     );
-    canvas.drawRect(window, windowPaint);
+    canvas.drawRect(entrance, entrancePaint);
+
+    // Двери (вид сверху - линии)
+    canvas.drawLine(
+      Offset(size.width / 2 - 20, size.height - 100),
+      Offset(size.width / 2 - 20, size.height - 80),
+      detailPaint..strokeWidth = 3,
+    );
+    canvas.drawLine(
+      Offset(size.width / 2 + 20, size.height - 100),
+      Offset(size.width / 2 + 20, size.height - 80),
+      detailPaint..strokeWidth = 3,
+    );
+
+    // Окна (вид сверху - линии по периметру)
+    // Передние окна
+    canvas.drawLine(
+      Offset(70, 70),
+      Offset(size.width - 70, 70),
+      detailPaint..strokeWidth = 2,
+    );
+    // Задние окна
+    canvas.drawLine(
+      Offset(70, size.height - 70),
+      Offset(size.width - 70, size.height - 70),
+      detailPaint..strokeWidth = 2,
+    );
+    // Боковые окна
+    canvas.drawLine(
+      Offset(70, 70),
+      Offset(70, size.height - 70),
+      detailPaint..strokeWidth = 2,
+    );
+    canvas.drawLine(
+      Offset(size.width - 70, 70),
+      Offset(size.width - 70, size.height - 70),
+      detailPaint..strokeWidth = 2,
+    );
+
+    // Тротуар вокруг здания
+    final sidewalkPaint =
+        Paint()
+          ..color = const Color(0xFFF5F5F5)
+          ..style = PaintingStyle.fill;
+
+    Rect sidewalk = Rect.fromLTWH(30, 30, size.width - 60, size.height - 110);
+    canvas.drawRect(sidewalk, sidewalkPaint);
+    canvas.drawRect(sidewalk, detailPaint);
+
+    // Зеленые зоны (газоны)
+    final grassPaint =
+        Paint()
+          ..color = const Color(0xFFE8F5E8)
+          ..style = PaintingStyle.fill;
+
+    // Газон перед зданием
+    Rect frontLawn = Rect.fromLTWH(80, 20, size.width - 160, 30);
+    canvas.drawRect(frontLawn, grassPaint);
+    canvas.drawRect(frontLawn, detailPaint);
+
+    // Газон за зданием
+    Rect backLawn = Rect.fromLTWH(80, size.height - 120, size.width - 160, 30);
+    canvas.drawRect(backLawn, grassPaint);
+    canvas.drawRect(backLawn, detailPaint);
+
+    // Деревья (круги)
+    final treePaint =
+        Paint()
+          ..color = const Color(0xFF8BC34A)
+          ..style = PaintingStyle.fill;
+
+    // Деревья перед зданием
+    canvas.drawCircle(Offset(100, 35), 8, treePaint);
+    canvas.drawCircle(Offset(size.width - 100, 35), 8, treePaint);
+
+    // Деревья на заднем дворе
+    canvas.drawCircle(Offset(100, size.height - 105), 8, treePaint);
+    canvas.drawCircle(
+      Offset(size.width - 100, size.height - 105),
+      8,
+      treePaint,
+    );
+
+    // Название бутика (вид сверху - текст как на карте)
+    final textBackgroundPaint =
+        Paint()
+          ..color = Colors.white.withOpacity(0.9)
+          ..style = PaintingStyle.fill;
+
+    Rect textBackground = Rect.fromLTWH(size.width / 2 - 40, 100, 80, 30);
+    canvas.drawRect(textBackground, textBackgroundPaint);
+    canvas.drawRect(textBackground, detailPaint);
   }
 
   @override
@@ -681,8 +791,63 @@ class BazarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Бутик',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: const Color(0xFF2D5F8B),
+        elevation: 2,
+      ),
+      backgroundColor: const Color(0xFFF8F9FA),
       body: Center(
-        child: CustomPaint(size: Size(300, 400), painter: BoutiquePainter()),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Карта',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[700],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[300]!),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: CustomPaint(
+                size: const Size(400, 500),
+                painter: BoutiquePainter(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

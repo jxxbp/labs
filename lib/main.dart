@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:labs/bazar.dart';
+import 'package:labs/google_map.dart';
 
 void main() {
   runApp(const LabsApp());
@@ -10,6 +11,6 @@ class LabsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: BazarPage());
+    return MaterialApp(home: BazaarMapWidget());
   }
 }
